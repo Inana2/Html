@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>p5.js Shapes Example</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+</head>
+<body>
+  <script>
+    let shapes = [];
+    let colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFFFFF', '#000000'];
+
+    function setup() {
+      createCanvas(windowWidth, windowHeight);
+      noLoop();
+    }
+
+    function draw() {
+      background(255);
+      drawShapes();
+    }
+
+    function drawShapes() {
+      for (let shape of shapes) {
+        fill(shape.color);
+        noStroke();
+        if (shape.type === 'circle') {
+          ellipse(shape.x, shape.y, shape.size, shape.size);
+        } else if (shape.type === 'square') {
+          rect(shape.x - shape.size / 2, shape.y - shape.size / 2, shape.size, shape.size);
+        } else if (shape.type === 'triangle') {
+          triangle(
+            shape.x, shape.y - shape.size / 2,
+            shape.x - shape.size / 2, shape.y + shape.size / 2,
+            shape.x + shape.size / 2, shape.y + shape.size / 2
+          );
+        }
+      }
+    }
+
+    function mousePressed() {
+      let newShape = {
+        type: random(['circle', 'square', 'triangle']),
+        x: mouseX,
+        y: mouseY,
+        size: random(20, 100),
+        color: random(colors)
+      };
+      shapes.push(newShape);
+      redraw();
+    }
+
+    function keyPressed() {
+      if (keyCode === 67) {  // 'C' key
+        shapes = [];
+        redraw();
+      } else if (keyCode === 82) {  // 'R' key
+        for (let shape of shapes) {
+          shape.color = random(colors);
+        }
+        redraw();
+      }
+    }
+  </script>
+</body>
+</html>
